@@ -34,7 +34,7 @@ Tujuan dari proyek ini adalah untuk memahami dasar pembuatan aplikasi CRUD (Crea
 ## 🧭 Flowchart
 Berikut merupakan alur sistem Address Book:
 
-![Flowchart System](fcabs.png)
+![Flowchart System](fcabs.jpg)
 
 ---
 
