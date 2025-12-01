@@ -1,18 +1,88 @@
-const contacts = [
+const dataContacts = [
   {
     id: 1,
-    fullname: "Taqwa Amni Ramadhan",
-    phone: 859102791881,
-    email: "taqwa.r1928@gmail.com",
+    fullName: "Mochamad Irvan",
+    phone: 62881080070700,
+    email: "mchmdirvan@example.com",
     location: "Jakarta",
   },
   {
     id: 2,
-    fullname: "Hanabi Yasuraoka",
-    phone: 8019283917,
-    email: "HanaYasu@Kuzu.com",
-    location: "Jakarta",
+    fullName: "Adhitya Sofyan",
+    phone: 62881080080800,
+    email: "adhitya@example.com",
+    location: "Bandung",
   },
 ];
 
-console.log(contacts);
+function displayContacts() {
+  for (const contact of dataContacts) {
+    console.log(`
+       🆔 : ${contact.id}
+       🧑‍🦱 : ${contact.fullName}
+       📱 : ${contact.phone}
+       📍 : ${contact.location}
+       ✉️ : ${contact.email}
+       `);
+  }
+}
+
+function getLastId() {
+  function getId(dataContacts) {
+    // STEP 1: Cek apakah dataContacts kosong?
+    if (dataContacts.length === 0) {
+      return 1; // Jika kosong, kembalikan ID 1 sebagai ID pertama
+    }
+
+    // STEP 2: Cari index (urutan) barang paling terakhir
+    const indexTerakhir = dataContacts.length - 1;
+
+    // STEP 3: Ambil object kontak yang paling terakhir
+    const kontakTerakhir = dataContacts[indexTerakhir];
+
+    // STEP 4: Ambil ID-nya, lalu tambah 1
+    const idBaru = kontakTerakhir.id + 1;
+
+    return idBaru;
+  }
+}
+
+function addContact(fullName, phone, email, location) {
+  dataContacts.push({
+    id: getLastId(),
+    fullName: fullName,
+    phone: phone,
+    email: email,
+    location: location,
+  });
+}
+
+function searchContacts(keyword) {
+  const filteredContacts = dataContacts.filter(
+    (filteredContact) => filteredContact.fullName == keyword
+  );
+
+  for (const contact of filteredContacts) {
+    console.log(`
+       🆔 : ${contact.id}
+       🧑‍🦱 : ${contact.fullName}
+       📱 : ${contact.phone}
+       📍 : ${contact.location}
+       ✉️ : ${contact.email}
+       `);
+  }
+  // console.log(filteredContacts);
+}
+
+function deleteContact() {
+  // TODO
+}
+
+function updateContact() {
+  // TODO
+}
+
+addContact("Rano Agustino", 6281234567890, "rano@example.com", "Jakarta");
+addContact("Rano Agustini", 6281234567890, "rano@example.com", "Jakarta");
+// displayContacts();
+searchContacts("Rano Agustino");
