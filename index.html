@@ -1,13 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Address Book</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Buku Kontak</title>
+    <!-- Tailwind CDN yang benar -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1 class="text-3xl">Address Book</h1>
-    <script src="/assets/scripts/script.js"></script>
+  <body class="p-6 bg-gray-100">
+    <h1 class="text-3xl mb-5">Buku Kontak</h1>
+    <div class="mb-4">
+      <input
+        id="searchBox"
+        type="text"
+        placeholder="Cari nama..."
+        class="border p-2 rounded w-64"
+      />
+      <button
+        onclick="cariDanRender()"
+        class="px-4 py-2 bg-blue-600 text-white rounded ml-2"
+      >
+        Cari
+      </button>
+    </div>
+
+    <div id="daftarKontak" class="grid gap-4"></div>
+
+    <script src="assets/scripts/script.js"></script>
+
+    <script>
+      function renderKontak(listKontak) {
+        const container = document.getElementById("daftarKontak");
+        container.innerHTML = "";
+
+        if (listKontak.length === 0) {
+          container.innerHTML = `
+          <p class="text-gray-500 italic">Tidak ada kontak.</p>
+        `;
+          return;
+        }
+
+        listKontak.forEach((k) => {
+          const card = document.createElement("div");
+
+          card.className =
+            "p-4 bg-white rounded shadow border flex justify-between items-center";
+
+          card.innerHTML = `
+          <div>
+            <p><strong>Nama:</strong> ${k.nama}</p>
+            <p><strong>Nomor:</strong> ${k.nomor}</p>
+            <p><strong>Email:</strong> ${k.surel}</p>
+            <p><strong>Kota:</strong> ${k.kota}</p>
+          </div>
+  
+          <div class="flex gap-2">
+            <button
+              onclick="editKontak('${k.nama}')"
+              class="px-3 py-1 bg-yellow-500 text-white rounded"
+            >
+              Edit
+            </button>
+  
+            <button
+              onclick="hapusKontakRender('${k.nama}')"
+              class="px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Hapus
+            </button>
+          </div>
+        `;
+
+          container.appendChild(card);
+        });
+      }
+
+      renderKontak(bukuKontak);
+
+      function cariDanRender() {
+        const keyword = document.getElementById("searchBox").value;
+        const hasil = bukuKontak.filter((x) =>
+          x.nama.toLowerCase().includes(keyword.toLowerCase())
+        );
+        renderKontak(hasil);
+      }
+
+      function hapusKontakRender(nama) {
+        hapusKontak(nama);
+        renderKontak(bukuKontak);
+      }
+
+      function editKontak(nama) {
+        const item = bukuKontak.find(
+          (x) => x.nama.toLowerCase() === nama.toLowerCase()
+        );
+
+        if (!item) return alert("Data tidak ditemukan.");
+
+        const newNama = prompt("Nama baru:", item.nama);
+        const newNo = prompt("Nomor baru:", item.nomor);
+        const newEmail = prompt("Email baru:", item.surel);
+        const newKota = prompt("Kota baru:", item.kota);
+
+        ubahKontak(
+          nama,
+          newNama || item.nama,
+          newNo || item.nomor,
+          newEmail || item.surel,
+          newKota || item.kota
+        );
+
+        renderKontak(bukuKontak);
+      }
+    </script>
   </body>
 </html>
