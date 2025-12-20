@@ -41,7 +41,7 @@ https://taqwaabs.vercel.app/
 
 Berikut merupakan alur sistem Address Book:
 
-![Flowchart System](images/fcabs.jpg)
+![Flowchart System](assets/images/fcabs.jpg)
 
 ---
 
