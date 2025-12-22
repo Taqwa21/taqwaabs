@@ -1,117 +1,93 @@
-// ================== DATA ==================
 let dataKontak = [
   {
-    uid: 10,
-    nama: "Rei Ayanami",
+    id: 1,
+    nama: "Naruto Uzumaki",
     nomor: 628111111111,
-    surel: "rei@example.com",
-    kota: "Tokyo",
+    email: "naruto@konoha.id",
+    kota: "Konoha",
   },
   {
-    uid: 11,
-    nama: "Shinobu Kocho",
+    id: 2,
+    nama: "Sasuke Uchiha",
     nomor: 628222222222,
-    surel: "shinobu@example.com",
-    kota: "Kyoto",
+    email: "sasuke@uchiha.id",
+    kota: "Konoha",
+  },
+  {
+    id: 3,
+    nama: "Mikasa Ackerman",
+    nomor: 628333333333,
+    email: "mikasa@paradis.id",
+    kota: "Shiganshina",
   },
 ];
 
-// ================== DOM ==================
-const bukuKontakEl = document.getElementById("buku-Kontak");
+const daftarKontak = document.getElementById("daftar-kontak");
+const formKontak = document.getElementById("formKontak");
 
-// ================== LOCAL STORAGE ==================
-function simpanKeLocalStorage() {
-  localStorage.setItem("contacts", JSON.stringify(dataKontak));
+formKontak.addEventListener("submit", tambahKontak);
+window.hapusKontak = hapusKontak;
+
+function tampilkanKontak() {
+  const data = ambilDariLocalStorage();
+  data === null ? simpanKeLocalStorage(dataKontak) : (dataKontak = data);
+
+  daftarKontak.innerHTML = dataKontak
+    .map(
+      (kontak) => `
+      <li class="border my-2 rounded-md p-2">
+        <h1>${kontak.nama}</h1>
+        <p>${kontak.nomor}</p>
+        <p>${kontak.email}</p>
+        <p>${kontak.kota}</p>
+        <button
+          onclick="hapusKontak(${kontak.id})"
+          class="border text-white bg-red-400 rounded-lg px-2 py-1 mt-2"
+        >
+          Hapus
+        </button>
+      </li>
+    `
+    )
+    .join("");
+}
+
+function buatIdBaru() {
+  return dataKontak[dataKontak.length - 1].id + 1;
+}
+
+function tambahKontak(e) {
+  e.preventDefault();
+
+  const formData = new FormData(formKontak);
+
+  const kontakBaru = {
+    id: buatIdBaru(),
+    nama: formData.get("nama"),
+    nomor: formData.get("nomor"),
+    email: formData.get("email"),
+    kota: formData.get("kota"),
+  };
+
+  dataKontak.push(kontakBaru);
+  simpanKeLocalStorage(dataKontak);
+  tampilkanKontak();
+  formKontak.reset();
+}
+
+function hapusKontak(id) {
+  dataKontak = dataKontak.filter((kontak) => kontak.id !== id);
+  simpanKeLocalStorage(dataKontak);
+  tampilkanKontak();
+}
+
+function simpanKeLocalStorage(data) {
+  localStorage.setItem("kontak", JSON.stringify(data));
 }
 
 function ambilDariLocalStorage() {
-  const data = localStorage.getItem("contacts");
-  return data ? JSON.parse(data) : [];
+  const data = localStorage.getItem("kontak");
+  return data ? JSON.parse(data) : null;
 }
 
-// ================== UTIL ==================
-function ambilIDBaru() {
-  if (dataKontak.length === 0) return 1;
-  return dataKontak[dataKontak.length - 1].uid + 1;
-}
-
-// ================== FUNCTION ==================
-function tampilkanKontakDOM() {
-  const loadContacts = ambilDariLocalStorage();
-
-  bukuKontakEl.innerHTML = "";
-
-  const listKontak = loadContacts.map((contact) => {
-    return `
-      <li class="border my-2 rounded-md p-2">
-        <h3>${contact.nama}</h3>
-        <p>${contact.nomor}</p>
-        <p>${contact.surel}</p>
-        <p>${contact.kota}</p>
-      </li>
-    `;
-  });
-
-  bukuKontakEl.innerHTML = listKontak.join("");
-}
-
-function simpanKontak(nama, nomor, email, kota) {
-  dataKontak.push({
-    uid: ambilIDBaru(),
-    nama,
-    nomor,
-    surel: email,
-    kota,
-  });
-
-  simpanKeLocalStorage();
-}
-
-function cariKontak(keyword) {
-  const hasil = dataKontak.filter((kontak) =>
-    kontak.nama.toLowerCase().includes(keyword.toLowerCase())
-  );
-
-  for (const h of hasil) {
-    console.log(`
-ID    : ${h.uid}
-Nama  : ${h.nama}
-Nomor : ${h.nomor}
-Email : ${h.surel}
-Kota  : ${h.kota}
-    `);
-  }
-}
-
-function hapusKontak(uid) {
-  dataKontak = dataKontak.filter((kontak) => kontak.uid !== uid);
-  simpanKeLocalStorage();
-}
-
-function ubahKontak(uid, dataBaru) {
-  dataKontak = dataKontak.map((kontak) => {
-    if (kontak.uid === uid) {
-      return {
-        ...kontak,
-        ...dataBaru,
-      };
-    }
-    return kontak;
-  });
-
-  simpanKeLocalStorage();
-}
-
-// ================== RUN PROGRAM ==================
-if (ambilDariLocalStorage().length === 0) {
-  simpanKeLocalStorage();
-}
-
-tampilkanKontakDOM();
-
-// contoh pemakaian
-simpanKontak("Makima", 628333333333, "makima@example.com", "Sapporo");
-simpanKontak("Power", 628444444444, "power@example.com", "Osaka");
-
-cariKontak("Shino");
-tampilkanKontakDOM();
+tampilkanKontak();
