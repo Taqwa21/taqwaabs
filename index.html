@@ -5,21 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buku Kontak</title>
 
-    <!-- CSS custom -->
     <link rel="stylesheet" href="/assets/css/style.css" />
 
-    <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <main>
-      <h1 class="text-3xl">Buku Kontak</h1>
+    <main class="p-5">
+      <h1 class="text-3xl mb-4">Buku Kontak</h1>
 
-      <div class="grid grid-cols-2">
-        <form class="ms-5 mt-5 space-y-2" id="formKontak">
+      <div class="grid grid-cols-2 gap-5">
+        <!-- Form tambah / edit -->
+        <form class="space-y-2" id="formKontak">
+          <input type="hidden" id="idKontak" />
+
           <div class="grid grid-cols-2 w-fit">
             <label for="nama">Nama</label>
-            <input class="border" type="text" name="nama" id="nama" required />
+            <input class="border" type="text" id="nama" name="nama" required />
           </div>
 
           <div class="grid grid-cols-2 w-fit">
@@ -27,8 +32,8 @@
             <input
               class="border"
               type="number"
-              name="nomor"
               id="nomor"
+              name="nomor"
               required
             />
           </div>
@@ -38,23 +43,51 @@
             <input
               class="border"
               type="email"
-              name="email"
               id="email"
+              name="email"
               required
             />
           </div>
 
           <div class="grid grid-cols-2 w-fit">
             <label for="kota">Kota</label>
-            <input class="border" type="text" name="kota" id="kota" required />
+            <input class="border" type="text" id="kota" name="kota" required />
           </div>
 
-          <button class="border bg-black text-white rounded-md px-3 py-1">
-            Simpan
-          </button>
+          <div class="flex gap-2 mt-2">
+            <button
+              type="submit"
+              class="border bg-black text-white rounded-md px-3 py-1"
+            >
+              Simpan
+            </button>
+
+            <button
+              type="button"
+              id="batalEdit"
+              class="border rounded-md px-3 py-1 hidden"
+            >
+              Batal
+            </button>
+          </div>
         </form>
 
-        <ul id="daftar-kontak"></ul>
+        <!-- Daftar kontak -->
+        <ul id="daftar-kontak" class="space-y-2">
+          <!-- Contoh item kontak -->
+          <!--
+          <li class="border p-2 flex justify-between items-center">
+            <div>
+              <p>Nama Kontak</p>
+              <p class="text-sm">08123456789</p>
+            </div>
+            <div class="flex gap-2">
+              <button class="editKontak text-blue-600">Edit</button>
+              <button class="hapusKontak text-red-600">Hapus</button>
+            </div>
+          </li>
+          -->
+        </ul>
       </div>
     </main>
 
